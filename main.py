@@ -104,7 +104,7 @@ def main():
     resources = tf_parser.get_resources()
 
     selected_resources = select_resource(resources)
-    print(selected_resources)
+    # print(selected_resources["attributes"].keys())
 
     if args.resource == "ec2":
         run_ec2_drift(selected_resources)

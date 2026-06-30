@@ -25,3 +25,14 @@ show_menu()
 }
 show_banner
 show_menu
+
+
+instance_type
+ami
+security_groups
+iam_role
+subnet
+vpc
+public_ip
+ebs
+tags
