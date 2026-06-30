@@ -1,0 +1,69 @@
+# ==========================
+# Python
+# ==========================
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Virtual Environment
+.venv/
+venv/
+env/
+
+# ==========================
+# Terraform
+# ==========================
+terraform/*
+.terraform/
+*.tfstate
+*.tfstate.*
+crash.log
+override.tf
+override.tf.json
+*_override.tf
+*_override.tf.json
+.terraform.lock.hcl
+
+# Variable files (optional)
+*.tfvars
+*.tfvars.json
+
+# Ignore local Terraform plans
+*.tfplan
+
+# ==========================
+# Output / Reports
+# ==========================
+output/
+*.json
+*.log
+*.txt
+*.csv
+*.xlsx
+
+# Exception for sample files if needed
+!examples/*.tfstate
+
+# ==========================
+# IDE
+# ==========================
+.vscode/
+.idea/
+
+# ==========================
+# OS Files
+# ==========================
+.DS_Store
+Thumbs.db
+
+# ==========================
+# Testing / Coverage
+# ==========================
+.pytest_cache/
+.coverage
+htmlcov/
+
+# ==========================
+# Environment Variables
+# ==========================
+.env
