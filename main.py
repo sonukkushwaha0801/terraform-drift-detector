@@ -5,6 +5,8 @@ from app.parser.tfstate_parser import TFStateParser
 from app.scanner.ec2_scanner import EC2Scanner
 from app.engine.drift_engine import DriftEngine
 from app.report.report_generator import ReportGenerator
+from app.scanner.sg_scanner import SGScanner
+from app.engine.sg_drift_engine import SGDriftEngine
 
 
 def display_resources(resources):
@@ -110,10 +112,37 @@ def main():
         run_ec2_drift(selected_resources)
 
     elif args.resource == "security_group":
-        print("[INFO] Security Group drift detection not implemented yet.")
+        run_sg_drift(selected_resources)
 
     elif args.resource == "s3":
         print("[INFO] S3 drift detection not implemented yet.")
+
+
+def run_sg_drift(selected_resources):
+    """
+    Execute Security Group drift detection pipeline.
+    """
+    scanner = SGScanner()
+    drift_engine = SGDriftEngine()
+    reporter = ReportGenerator()
+
+    # Bulk scan
+    if isinstance(selected_resources, list):
+        for resource in selected_resources:
+            print(f"\nScanning: {resource['name']} ({resource['resource_id']})")
+
+            actual = scanner.get_security_group_details(resource["resource_id"])
+
+            drift_report = drift_engine.compare_sg(resource, actual)
+            reporter.generate(drift_report)
+
+    # Single scan
+    else:
+        actual = scanner.get_security_group_details(selected_resources["resource_id"])
+
+        drift_report = drift_engine.compare_sg(selected_resources, actual)
+
+        reporter.generate(drift_report)
 
 
 if __name__ == "__main__":
