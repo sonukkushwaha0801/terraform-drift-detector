@@ -56,14 +56,14 @@ jobs:
         run: |
           python -c "import main"
 
-          python -c "from app.parser.tfstate_parser import TerraformStateParser"
+          python -c "from app.parser.tfstate_parser import TFStateParser"
 
           python -c "from app.scanner.ec2_scanner import EC2Scanner"
-          python -c "from app.scanner.sg_scanner import SecurityGroupScanner"
+          python -c "from app.scanner.sg_scanner import SGScanner"
           python -c "from app.scanner.s3_scanner import S3Scanner"
 
           python -c "from app.engine.drift_engine import DriftEngine"
-          python -c "from app.engine.sg_drift_engine import SecurityGroupDriftEngine"
+          python -c "from app.engine.sg_drift_engine import SGDriftEngine"
           python -c "from app.engine.s3_drift_engine import S3DriftEngine"
 
           python -c "from app.report.report_generator import ReportGenerator"
