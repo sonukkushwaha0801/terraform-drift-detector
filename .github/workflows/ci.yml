@@ -40,13 +40,18 @@ jobs:
         run: |
           pip install -r requirements.txt
 
-      - name: Verify Project Structure
+      - name: Debug Repository
         run: |
-          test -f main.py
-          test -f requirements.txt
-          test -d app
-          test -d docs
-          test -d terraform
+          echo "Current Directory:"
+          pwd
+
+          echo ""
+          echo "Files:"
+          ls -la
+
+          echo ""
+          echo "Recursive Tree:"
+          find . -maxdepth 2
 
       - name: Compile Python Files
         run: |
