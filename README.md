@@ -4,6 +4,8 @@
 
 # 🛡️ DriftGuard
 
+![DriftGuard](assets/banner.webp)
+
 ### Infrastructure Drift Detection Engine for Terraform-managed Cloud Infrastructure
 
 <p align="center">
