@@ -7,6 +7,8 @@ from app.engine.drift_engine import DriftEngine
 from app.report.report_generator import ReportGenerator
 from app.scanner.sg_scanner import SGScanner
 from app.engine.sg_drift_engine import SGDriftEngine
+from app.scanner.s3_scanner import S3Scanner
+from app.engine.s3_drift_engine import S3DriftEngine
 
 
 def display_resources(resources):
@@ -94,30 +96,6 @@ def run_ec2_drift(selected_resources):
         reporter.generate(drift_report)
 
 
-def main():
-    parser = argparse.ArgumentParser(description="DriftGuard")
-
-    parser.add_argument("--resource", required=True)
-    parser.add_argument("--tfstate", required=True)
-
-    args = parser.parse_args()
-
-    tf_parser = TFStateParser(args.tfstate, args.resource)
-    resources = tf_parser.get_resources()
-
-    selected_resources = select_resource(resources)
-    # print(selected_resources["attributes"].keys())
-
-    if args.resource == "ec2":
-        run_ec2_drift(selected_resources)
-
-    elif args.resource == "security_group":
-        run_sg_drift(selected_resources)
-
-    elif args.resource == "s3":
-        print("[INFO] S3 drift detection not implemented yet.")
-
-
 def run_sg_drift(selected_resources):
     """
     Execute Security Group drift detection pipeline.
@@ -143,6 +121,57 @@ def run_sg_drift(selected_resources):
         drift_report = drift_engine.compare_sg(selected_resources, actual)
 
         reporter.generate(drift_report)
+
+
+def run_s3_drift(selected_resources):
+    """
+    Execute S3 drift detection pipeline.
+    """
+    scanner = S3Scanner()
+    drift_engine = S3DriftEngine()
+    reporter = ReportGenerator()
+
+    # Bulk scan
+    if isinstance(selected_resources, list):
+        for resource in selected_resources:
+            print(f"\nScanning: {resource['name']} ({resource['resource_id']})")
+
+            actual = scanner.get_bucket_details(resource["resource_id"])
+
+            drift_report = drift_engine.compare_s3(resource, actual)
+            reporter.generate(drift_report)
+
+    # Single scan
+    else:
+        actual = scanner.get_bucket_details(selected_resources["resource_id"])
+
+        drift_report = drift_engine.compare_s3(selected_resources, actual)
+
+        reporter.generate(drift_report)
+
+
+def main():
+    parser = argparse.ArgumentParser(description="DriftGuard")
+
+    parser.add_argument("--resource", required=True)
+    parser.add_argument("--tfstate", required=True)
+
+    args = parser.parse_args()
+
+    tf_parser = TFStateParser(args.tfstate, args.resource)
+    resources = tf_parser.get_resources()
+
+    selected_resources = select_resource(resources)
+    # print(selected_resources["attributes"].keys())
+
+    if args.resource == "ec2":
+        run_ec2_drift(selected_resources)
+
+    elif args.resource == "security_group":
+        run_sg_drift(selected_resources)
+
+    elif args.resource == "s3":
+        run_s3_drift(selected_resources)
 
 
 if __name__ == "__main__":
