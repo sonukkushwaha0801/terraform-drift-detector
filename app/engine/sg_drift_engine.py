@@ -103,17 +103,17 @@ class SGDriftEngine:
                     "issue": "Egress rules changed",
                 }
             )
-        print("\nEXPECTED INGRESS")
-        print(expected_ingress)
+        # print("\nEXPECTED INGRESS")
+        # print(expected_ingress)
 
-        print("\nACTUAL INGRESS")
-        print(actual_ingress)
+        # print("\nACTUAL INGRESS")
+        # print(actual_ingress)
 
-        print("\nEXPECTED EGRESS")
-        print(expected_egress)
+        # print("\nEXPECTED EGRESS")
+        # print(expected_egress)
 
-        print("\nACTUAL EGRESS")
-        print(actual_egress)
+        # print("\nACTUAL EGRESS")
+        # print(actual_egress)
 
         return drift_report
 
