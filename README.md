@@ -2,7 +2,6 @@
 <!-- DriftGuard -->
 <!-- ====================================================== -->
 
-
 # 🛡️ DriftGuard
   
 ![DriftGuard Banner](assets/banner.webp)
